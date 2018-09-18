@@ -29,6 +29,13 @@ grid = np.array([
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
 
 
+## with the following code, a random maze grid is created.
+#  
+#   randomgrid = np.random.randint(2, size=(SIZE,SIZE))
+#   however not all mazes are solvable. needs more work
+#   perhaps whats needed is not so much random as procedural.
+#   or random and then perturbed...
+######
 
 
 # taking manhattan distance as the A* heuristic. TODO : try more distances as A* heuristics

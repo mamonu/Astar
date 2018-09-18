@@ -43,3 +43,28 @@ We’re not only trying to find the shortest distance; we also want to take into
 
 
 <img src="https://github.com/mamonu/Astar/blob/master/out.gif"  title="A*">
+
+
+
+
+
+----
+
+#### TODO/DONE:
+
+create random maps: DONE :v:
+
+<img src="https://github.com/mamonu/Astar/blob/master/outrand.gif"  title="A*">
+
+
+
+
+create always solvable mazes : TODO  :sweat:
+
+
+
+
+create procedural mazes : TODO :cold_sweat:
+
+
+use a graphics library to put everything on 3d: TODO :scream:
