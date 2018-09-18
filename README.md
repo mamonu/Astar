@@ -8,20 +8,21 @@ A * pathfinder algorithm experiments on a (for the time being) preset maze
 
 ### TLDR 
 
-start - end points
+maze & start & end points:
 
 <img src="https://github.com/mamonu/Astar/blob/master/mazestep_000.png" align="right" title="Start">
 
 
 
 
-A* algorithm
-
-<img src="https://github.com/mamonu/Astar/blob/out.gif" align="right" title="A*">
+A* algorithm:
 
 
+<img src="https://github.com/mamonu/Astar/blob/master/out.gif"  title="A*">
 
-### A*
+
+
+### A* algorithm
 
 In games we often want to find paths from one location to another. 
 We’re not only trying to find the shortest distance; we also want to take into account travel time.
