@@ -43,6 +43,24 @@ grid = np.array([
 def heuristic(a, b):
     return np.sqrt((b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2)
 
+def eukleidian(a,b):
+	dim = len(a)	# dimention of vector a
+	c = 0			# declaring variable for storing a^2 + b^2
+	while(dim>0):   # loop with iterations=dimention for Σ(a^2+b^2)
+		c += ((b[dim-1] - a[dim-1]) ** 2) #dim-1 because of the a[0],b[0]
+		dim -= 1
+	return np.sqrt(c)
+
+def britishrl(a,b):
+	dim = len(a)
+	c1 = 0
+	c2 = 0
+	while(dim>0):
+		c1 += np.sqrt((b[dim - 1]) ** 2) #the oldschool way of abs 
+		c2 += np.sqrt((a[dim - 1]) ** 2)
+		dim -= 1
+	return c1 + c2
+
 def astar(array, start, goal):
 
     neighbors = [(0,1),(0,-1),(1,0),(-1,0),(1,1),(1,-1),(-1,1),(-1,-1)]
