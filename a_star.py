@@ -61,6 +61,16 @@ def britishrl(a,b):
 		dim -= 1
 	return c1 + c2
 
+def rsm(a,b): 	# radar screen metric 
+	dim = len(a)
+	aminb = a
+	while(dim>0):
+		aminb[dim-1] = abs(b[dim - 1] - a[dim-1])    
+		dim -= 1
+	aminb.append(1)
+	min_aminband1 = min(aminb)
+	return min_aminband1
+	
 def astar(array, start, goal):
 
     neighbors = [(0,1),(0,-1),(1,0),(-1,0),(1,1),(1,-1),(-1,1),(-1,-1)]
