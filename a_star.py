@@ -37,6 +37,60 @@ grid = np.array([
 #   or random and then perturbed...
 ######
 
+def randomgrid(mazesize):
+	grid = np.random.randint(0,2, size=(mazesize,mazesize))
+	solution = np.random.randint(1,2, size=(mazesize,mazesize))
+	starting_border = np.random.randint(0,4)
+	if(starting_border == 0):
+		lasti = np.random.randint(0,mazesize)
+		lastj = 0
+	elif(starting_border == 1):
+		lasti = np.random.randint(0,mazesize)
+		lastj = mazesize - 1
+	elif(starting_border == 2):
+		lasti = 0
+		lastj = np.random.randint(0,mazesize)
+	elif(starting_border == 3):
+		lasti = mazesize - 1
+		lastj = np.random.randint(0,mazesize)
+	i = 1
+	while(i>0):
+		solution[lasti, lastj] = 0
+		grid[lasti, lastj] = 0
+		if(((lasti == 0) or (lasti == mazesize-1) or (lastj == mazesize-1) or (lastj == 0)) and i>14): # setting param i bigger will result in bigger labyrinth paths : ) 
+			i = -1
+		stepi = 0
+		stepj = 0
+		while(stepi==0 and stepj==0):
+			if(lasti == 0):
+				stepi += np.random.randint(0,2)
+				lasti = lasti + stepi
+			elif(lasti == mazesize - 1):
+				stepi -= np.random.randint(0,2)
+				lasti = lasti + stepi
+			elif(lasti > 0 and lasti < (mazesize-1)):
+				stepi = np.random.randint(0,2)
+				addminuscase = np.random.randint(0,2)			
+				if (addminuscase==0): 
+					lasti = lasti + stepi			
+				else:
+					lasti = lasti - stepi
+			if(lastj == 0):
+				stepj += np.random.randint(0,2)
+				lastj = lastj + stepj
+			elif(lastj == mazesize - 1):
+				stepj -= np.random.randint(0,2)
+				lastj = lastj + stepj			
+			elif(lastj > 0 and lastj < (mazesize-1)):
+				stepj = np.random.randint(0,2)
+				addminuscase = np.random.randint(0,2)
+				if (addminuscase==0): 
+					lastj = lastj + stepj
+				else:
+					lastj=lastj - stepj
+		i += 1
+	print(solution)
+	return grid
 
 # taking manhattan distance as the A* heuristic. TODO : try more distances as A* heuristics
 
