@@ -38,59 +38,51 @@ grid = np.array([
 ######
 
 def randomgrid(mazesize):
-	grid = np.random.randint(0,2, size=(mazesize,mazesize))
-	solution = np.random.randint(1,2, size=(mazesize,mazesize))
-	starting_border = np.random.randint(0,4)
-	if(starting_border == 0):
-		lasti = np.random.randint(0,mazesize)
-		lastj = 0
-	elif(starting_border == 1):
-		lasti = np.random.randint(0,mazesize)
-		lastj = mazesize - 1
-	elif(starting_border == 2):
-		lasti = 0
-		lastj = np.random.randint(0,mazesize)
-	elif(starting_border == 3):
-		lasti = mazesize - 1
-		lastj = np.random.randint(0,mazesize)
-	i = 1
-	while(i>0):
-		solution[lasti, lastj] = 0
-		grid[lasti, lastj] = 0
-		if(((lasti == 0) or (lasti == mazesize-1) or (lastj == mazesize-1) or (lastj == 0)) and i>14): # setting param i bigger will result in bigger labyrinth paths : ) 
-			i = -1
-		stepi = 0
-		stepj = 0
-		while(stepi==0 and stepj==0):
-			if(lasti == 0):
-				stepi += np.random.randint(0,2)
-				lasti = lasti + stepi
-			elif(lasti == mazesize - 1):
-				stepi -= np.random.randint(0,2)
-				lasti = lasti + stepi
-			elif(lasti > 0 and lasti < (mazesize-1)):
-				stepi = np.random.randint(0,2)
-				addminuscase = np.random.randint(0,2)			
-				if (addminuscase==0): 
-					lasti = lasti + stepi			
-				else:
-					lasti = lasti - stepi
-			if(lastj == 0):
-				stepj += np.random.randint(0,2)
-				lastj = lastj + stepj
-			elif(lastj == mazesize - 1):
-				stepj -= np.random.randint(0,2)
-				lastj = lastj + stepj			
-			elif(lastj > 0 and lastj < (mazesize-1)):
-				stepj = np.random.randint(0,2)
-				addminuscase = np.random.randint(0,2)
-				if (addminuscase==0): 
-					lastj = lastj + stepj
-				else:
-					lastj=lastj - stepj
-		i += 1
-	print(solution)
-	return grid
+    grid = np.random.randint(0,2, size=(mazesize,mazesize))
+    solution = np.random.randint(1,2, size=(mazesize,mazesize))
+    lasti = 0 #starting on left in x plane
+    lastj = 0 #starting on top  in y plane
+    i = 1
+    while(i>0):
+        solution[lasti, lastj] = 0
+        grid[lasti, lastj] = 0
+        if((lasti == mazesize-1) and (lastj == mazesize-1)): #stoping when we find the exit at bottom right corner of the maze
+            rounds = i
+            i = -1
+        stepi = 0
+        stepj = 0
+        while(stepi==0 and stepj==0):
+            if(lasti == 0):
+                stepi += np.random.randint(0,2)
+                lasti = lasti + stepi
+            elif(lasti == mazesize - 1):
+                stepi -= np.random.randint(0,2)
+                lasti = lasti + stepi
+            elif(lasti > 0 and lasti < (mazesize-1)):
+                stepi = np.random.randint(0,2)
+                addminuscase = np.random.randint(0,2)           
+                if (addminuscase==0):
+                    lasti = lasti + stepi           
+                else:
+                    lasti = lasti - stepi
+            if(lastj == 0):
+                stepj += np.random.randint(0,2)
+                lastj = lastj + stepj
+            elif(lastj == mazesize - 1):
+                stepj -= np.random.randint(0,2)
+                lastj = lastj + stepj           
+            elif(lastj > 0 and lastj < (mazesize-1)):
+                stepj = np.random.randint(0,2)
+                addminuscase = np.random.randint(0,2)
+                if (addminuscase==0):
+                    lastj = lastj + stepj
+                else:
+                    lastj=lastj - stepj
+        i += 1
+    if(rounds >= mazesize*mazesize): #thus we make sure we don't get very "clear" pathway
+        return randomgrid(mazesize)
+    print(solution)
+    return grid
 
 # taking manhattan distance as the A* heuristic. TODO : try more distances as A* heuristics
 
@@ -100,7 +92,7 @@ def heuristic(a, b):
 def eukleidian(a,b):
 	dim = len(a)	# dimention of vector a
 	c = 0			# declaring variable for storing a^2 + b^2
-	while(dim>0):   # loop with iterations=dimention for Σ(a^2+b^2)
+	while(dim>0):   # loop with iterations=dimention for S(a^2+b^2)
 		c += ((b[dim-1] - a[dim-1]) ** 2) #dim-1 because of the a[0],b[0]
 		dim -= 1
 	return np.sqrt(c)
