@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 
 
-# maze grid in numpy array format. TODO : create random mazes with a function
+# maze grid in numpy array format. 
 
 grid = np.array([
     [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
