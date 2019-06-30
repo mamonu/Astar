@@ -52,19 +52,12 @@ We’re not only trying to find the shortest distance; we also want to take into
 
 #### TODO/DONE:
 
-create random maps: DONE :v:
+ - create random maps with a function: DONE :v:
 
 <img src="https://github.com/mamonu/Astar/blob/master/outrand.gif"  title="A*">
 
 
+- integrate [MAZEBOT API](https://github.com/mamonu/Astar/blob/master/MazebotAPI.md)  : Current Step :game_die:
 
 
-create always solvable mazes : TODO  :sweat:
-
-
-
-
-create procedural mazes : TODO :cold_sweat:
-
-
-use a graphics library to put everything on 3d: TODO :scream:
+- use a graphics library to have everything  3d: TODO :scream:
