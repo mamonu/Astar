@@ -2,6 +2,7 @@ import numpy as np
 import heapq
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
+import mazebotapi # To import MazebotAPI request functions from mazebotapi.py
 
 
 # maze grid in numpy array format. 
@@ -172,6 +173,13 @@ def astar(array, start, goal):
 start = (0,0)
 goal = (19,19)
 
+# Uncomment line below if you wish to run the script with a random maze from MazebotAPI
+# In case of TypeError, rerun script and try again
+# grid, start, goal = mazebotapi.get_mazebot_random()
+
+# Uncomment line below if you wish to run the script with a random maze within defined size constraints
+# In case of TypeError, rerun script and try again
+# grid, start, goal = mazebotapi.get_mazebot_sized()
 
 route = astar(grid, start, goal)
 route = route + [start]
