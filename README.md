@@ -60,13 +60,10 @@ We’re not only trying to find the shortest distance; we also want to take into
 - use other distance metrics in the algorithm?
 
 - integrate [MAZEBOT API](https://github.com/mamonu/Astar/blob/master/MazebotAPI.md)  : 
-
-Perhaps someone can help with integrating the github mazebot API?
-Ie get a maze from the api and solve it with the algorithm and return the solution through the API?
+   * get a maze from the api  DONE :v:  
+   * solve the maze DONE :v:  (this is what the algorithm does!)
+   * return the solution through the API? ISSUE with a [hacktoberfest] label
 
 <img src="https://hacktoberfest.digitalocean.com/assets/logo-hf19-header-8245176fe235ab5d942c7580778a914110fa06a23c3d55bf40e2d061809d8785.svg"  title="Hacktoberfest issue">
-
-
-
 
 - use a graphics library to visualise everything in 3d: TODO :scream:
