@@ -1,138 +1,143 @@
-import numpy as np
 import heapq
+import numpy
 import matplotlib.pyplot as plt
-from matplotlib.pyplot import figure
-import mazebotapi # To import MazebotAPI request functions from mazebotapi.py
+import mazebotapi  # To import MazebotAPI request functions from mazebotapi.py
 
 
-# maze grid in numpy array format. 
+grid = numpy.array(
+    [
+        [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0],
+        [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ]
+)
 
-grid = np.array([
-    [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0],
-    [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
 
-
-## with the following code, a random maze grid is created.
-#  
-#   randomgrid = np.random.randint(2, size=(SIZE,SIZE))
-#   however not all mazes are solvable. needs more work
-#   perhaps whats needed is not so much random as procedural.
-#   or random and then perturbed...
-######
-
-def randomgrid(mazesize):
-    grid = np.random.randint(0,2, size=(mazesize,mazesize))
-    solution = np.random.randint(1,2, size=(mazesize,mazesize))
-    lasti = 0 #starting on left in x plane
-    lastj = 0 #starting on top  in y plane
+def random_grid(maze_size):
+    """Generate a random maze grid.
+        random_grid = numpy.random.randint(2, size=(SIZE,SIZE))
+        Note: Not all mazes are currently solvable.
+        TODO: Look into procedural generation over random"""
+    grid = numpy.random.randint(0, 2, size=(maze_size, maze_size))
+    solution = numpy.random.randint(1, 2, size=(maze_size, maze_size))
+    x_plane = 0  # starting on left in x plane
+    y_plane = 0  # starting on top  in y plane
     i = 1
-    while(i>0):
-        solution[lasti, lastj] = 0
-        grid[lasti, lastj] = 0
-        if((lasti == mazesize-1) and (lastj == mazesize-1)): #stoping when we find the exit at bottom right corner of the maze
+    while i > 0:
+        solution[x_plane, y_plane] = 0
+        grid[x_plane, y_plane] = 0
+        if (x_plane == maze_size - 1) and (y_plane == maze_size - 1):
             rounds = i
             i = -1
-        stepi = 0
-        stepj = 0
-        while(stepi==0 and stepj==0):
-            if(lasti == 0):
-                stepi += np.random.randint(0,2)
-                lasti = lasti + stepi
-            elif(lasti == mazesize - 1):
-                stepi -= np.random.randint(0,2)
-                lasti = lasti + stepi
-            elif(lasti > 0 and lasti < (mazesize-1)):
-                stepi = np.random.randint(0,2)
-                addminuscase = np.random.randint(0,2)           
-                if (addminuscase==0):
-                    lasti = lasti + stepi           
+        x_step = 0
+        y_step = 0
+        while x_step == 0 and y_step == 0:
+            if x_plane == 0:
+                x_step += numpy.random.randint(0, 2)
+                x_plane = x_plane + x_step
+            elif x_plane == maze_size - 1:
+                x_step -= numpy.random.randint(0, 2)
+                x_plane = x_plane + x_step
+            elif x_plane > 0 < (maze_size - 1):
+                x_step = numpy.random.randint(0, 2)
+                addminuscase = numpy.random.randint(0, 2)
+                if addminuscase == 0:
+                    x_plane = x_plane + x_step
                 else:
-                    lasti = lasti - stepi
-            if(lastj == 0):
-                stepj += np.random.randint(0,2)
-                lastj = lastj + stepj
-            elif(lastj == mazesize - 1):
-                stepj -= np.random.randint(0,2)
-                lastj = lastj + stepj           
-            elif(lastj > 0 and lastj < (mazesize-1)):
-                stepj = np.random.randint(0,2)
-                addminuscase = np.random.randint(0,2)
-                if (addminuscase==0):
-                    lastj = lastj + stepj
+                    x_plane = x_plane - x_step
+            if y_plane == 0:
+                y_step += numpy.random.randint(0, 2)
+                y_plane = y_plane + y_step
+            elif y_plane == maze_size - 1:
+                y_step -= numpy.random.randint(0, 2)
+                y_plane = y_plane + y_step
+            elif y_plane > 0 < (maze_size - 1):
+                y_step = numpy.random.randint(0, 2)
+                addminuscase = numpy.random.randint(0, 2)
+                if addminuscase == 0:
+                    y_plane = y_plane + y_step
                 else:
-                    lastj=lastj - stepj
+                    y_plane = y_plane - y_step
         i += 1
-    if(rounds >= mazesize*mazesize): #thus we make sure we don't get very "clear" pathway
-        return randomgrid(mazesize)
+    if rounds >= maze_size * maze_size:
+        return random_grid(maze_size)
     print(solution)
     return grid
 
-# taking manhattan distance as the A* heuristic. TODO : try more distances as A* heuristics
 
-def heuristic(a, b):
-    return np.sqrt((b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2)
+def heuristic(vector_a, vector_b):
+    """ Taking manhattan distance as the A* heuristic.
+        TODO : try more distances as A* heuristics."""
+    return numpy.sqrt(
+        (vector_b[0] - vector_a[0]) ** 2 + (vector_b[1] - vector_a[1]) ** 2
+    )
 
-def eukleidian(a,b):
-	dim = len(a)	# dimention of vector a
-	c = 0			# declaring variable for storing a^2 + b^2
-	while(dim>0):   # loop with iterations=dimention for S(a^2+b^2)
-		c += ((b[dim-1] - a[dim-1]) ** 2) #dim-1 because of the a[0],b[0]
-		dim -= 1
-	return np.sqrt(c)
 
-def britishrl(a,b):
-	dim = len(a)
-	c1 = 0
-	c2 = 0
-	while(dim>0):
-		c1 += np.sqrt((b[dim - 1]) ** 2) #the oldschool way of abs 
-		c2 += np.sqrt((a[dim - 1]) ** 2)
-		dim -= 1
-	return c1 + c2
+def eukleidian(vector_a, vector_b):
+    dimension = len(vector_a)  # dimension of vector a
+    result = 0  # declaring variable for storing a^2 + b^2
+    while dimension > 0:  # loop with iterations=dimension for S(a^2+b^2)
+        result += (
+            vector_b[dimension - 1] - vector_a[dimension - 1]
+        ) ** 2  # dimension-1 because of the a[0],b[0]
+        dimension -= 1
+    return numpy.sqrt(result)
 
-def rsm(a,b): 	# radar screen metric 
-	dim = len(a)
-	aminb = a
-	while(dim>0):
-		aminb[dim-1] = abs(b[dim - 1] - a[dim-1])    
-		dim -= 1
-	aminb.append(1)
-	min_aminband1 = min(aminb)
-	return min_aminband1
-	
+
+def britishrl(vector_a, vector_b):
+    dimension = len(vector_a)
+    i = 0
+    y = 0
+    while dimension > 0:
+        i += numpy.sqrt((vector_b[dimension - 1]) ** 2)  # the oldschool way of abs
+        y += numpy.sqrt((vector_a[dimension - 1]) ** 2)
+        dimension -= 1
+    return i + y
+
+
+def radar_screen_metric(vector_a, vector_b):
+    # radar screen metric
+    dimension = len(vector_a)
+    aminb = vector_a
+    while dimension > 0:
+        aminb[dimension - 1] = abs(vector_b[dimension - 1] - vector_a[dimension - 1])
+        dimension -= 1
+    aminb.append(1)
+    return min(aminb)
+
+
 def astar(array, start, goal):
 
-    neighbors = [(0,1),(0,-1),(1,0),(-1,0),(1,1),(1,-1),(-1,1),(-1,-1)]
+    neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)]
 
     close_set = set()
     came_from = {}
-    gscore = {start:0}
-    fscore = {start:heuristic(start, goal)}
-    oheap = []
+    g_score = {start: 0}
+    f_score = {start: heuristic(start, goal)}
+    o_heap = []
 
-    heapq.heappush(oheap, (fscore[start], start))
-    
-    while oheap:
+    heapq.heappush(o_heap, (f_score[start], start))
 
-        current = heapq.heappop(oheap)[1]
+    while o_heap:
+
+        current = heapq.heappop(o_heap)[1]
 
         if current == goal:
             data = []
@@ -144,9 +149,9 @@ def astar(array, start, goal):
         close_set.add(current)
         for i, j in neighbors:
             neighbor = current[0] + i, current[1] + j
-            tentative_g_score = gscore[current] + heuristic(current, neighbor)
+            tentative_g_score = g_score[current] + heuristic(current, neighbor)
             if 0 <= neighbor[0] < array.shape[0]:
-                if 0 <= neighbor[1] < array.shape[1]:                
+                if 0 <= neighbor[1] < array.shape[1]:
                     if array[neighbor[0]][neighbor[1]] == 1:
                         continue
                 else:
@@ -155,23 +160,23 @@ def astar(array, start, goal):
             else:
                 # array bound x walls
                 continue
-                
-            if neighbor in close_set and tentative_g_score >= gscore.get(neighbor, 0):
+
+            if neighbor in close_set and tentative_g_score >= g_score.get(neighbor, 0):
                 continue
-                
-            if  tentative_g_score < gscore.get(neighbor, 0) or neighbor not in [i[1]for i in oheap]:
+
+            if tentative_g_score < g_score.get(neighbor, 0) or neighbor not in [
+                i[1] for i in o_heap
+            ]:
                 came_from[neighbor] = current
-                gscore[neighbor] = tentative_g_score
-                fscore[neighbor] = tentative_g_score + heuristic(neighbor, goal)
-                heapq.heappush(oheap, (fscore[neighbor], neighbor))
-                
+                g_score[neighbor] = tentative_g_score
+                f_score[neighbor] = tentative_g_score + heuristic(neighbor, goal)
+                heapq.heappush(o_heap, (f_score[neighbor], neighbor))
+
     return False
 
 
-
-
-start = (0,0)
-goal = (19,19)
+start = (0, 0)
+goal = (19, 19)
 
 # Uncomment line below if you wish to run the script with a random maze from MazebotAPI
 # In case of TypeError, rerun script and try again
@@ -186,44 +191,38 @@ route = route + [start]
 route = route[::-1]
 
 
-
-#extract x and y coordinates from route list
+# extract x and y coordinates from route list
 x_coords = []
 y_coords = []
 
 
-for i in (range(0,len(route))):
+for i, item in enumerate(route):
     with plt.xkcd():
         x = route[i][0]
         y = route[i][1]
         x_coords.append(x)
         y_coords.append(y)
-        fig, ax = plt.subplots(figsize=(8,8))
+        fig, ax = plt.subplots(figsize=(8, 8))
         ax.imshow(grid, cmap=plt.cm.Dark2)
-        ax.scatter(start[1],start[0], marker = "*", color = "yellow", s = 200)
-        ax.scatter(goal[1],goal[0], marker = "+", color = "red", s = 200)
-        ax.plot(y_coords,x_coords, color = "black")
+        ax.scatter(start[1], start[0], marker="*", color="yellow", s=200)
+        ax.scatter(goal[1], goal[0], marker="+", color="red", s=200)
+        ax.plot(y_coords, x_coords, color="black")
         plt.xticks([])
         plt.yticks([])
-        plt.title("A* algorithm step "+str(i))
+        plt.title("A* algorithm step " + str(i))
 
-        ##output numbering in a ffmpeg compatible way!
-
-        if (i<10):
+        # Output numbering in a ffmpeg compatible way!
+        if i < 10:
             filename = "mazestep_00%d.png" % i
-        elif (i>9)&(i<100):
+        elif (i > 9) & (i < 100):
             filename = "mazestep_0%d.png" % i
         else:
             filename = "mazestep_%d.png" % i
 
-        
         plt.savefig(filename)
         plt.close()
-    #plt.show()
-    
-    
- 
+    # plt.show()
 
 
- # need to then run from the shell: 
- # ffmpeg -v warning -i mazestep_%03d.png -y out.gif
+# need to then run from the shell:
+# ffmpeg -v warning -i mazestep_%03d.png -y out.gif

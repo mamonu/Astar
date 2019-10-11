@@ -1,22 +1,21 @@
 import numpy
 import requests
 
+
 def parse_maze(grid):
     """
     This function is called to parse the maze retrieved from MazebotAPI
     into numpy array format (class 'numpy.ndarray').
     """
     for array in grid:
-        # print(array)
         index = 0
         for element in array:
-            # print(element)
             if element == "X":
                 array[index] = 1
             else:
                 array[index] = 0
             index += 1
-    
+
     return numpy.asarray(grid)
 
 
@@ -27,7 +26,9 @@ def get_mazebot_random():
     60, 100, 120, 150, and 200. To restric range of possible sizes, call
     the function 'get_mazebot_sized' instead.
     """
-    request_data = requests.get("https://api.noopschallenge.com/mazebot/random?minSize=10&maxSize=10").json()
+    request_data = requests.get(
+        "https://api.noopschallenge.com/mazebot/random?min_size=10&max_size=10"
+    ).json()
     start = tuple(request_data["startingPosition"])
     goal = tuple(request_data["endingPosition"])
     raw_grid = request_data["map"]
@@ -52,24 +53,34 @@ def get_mazebot_sized():
         requested to MazebotAPI. Input validation is made using array of valid intgers,
         defined on the MazebotAPI documentation.
         """
-        base_url = "https://api.noopschallenge.com/mazebot/random?minSize=''&maxSize=''"
+        base_url = "https://api.noopschallenge.com/mazebot/random?min_size=''&max_size=''"
         sizes = [10, 20, 40, 60, 100, 120, 150, 200]
         try:
-            minSize = int(input("Please enter minimum array size. Valid values are: 10, 20, 40, 60, 100, 120, 150, and 200.\nType here: "))
-            if minSize not in sizes:
+            min_size = int(
+                input(
+                    "Please enter minimum array size. Valid values are: 10, 20, 40, 60, 100, 120, 150, and 200.\nType here: "
+                )
+            )
+            if min_size not in sizes:
                 raise ValueError
-            base_url = base_url.replace("minSize=''", "minSize={}".format(str(minSize)))
+            base_url = base_url.replace("min_size=''", "min_size={}".format(str(min_size)))
 
-            maxSize = int(input("Please enter maximum array size. Valid values are: 10, 20, 40, 60, 100, 120, 150, and 200. Max size must be equal of higher than min size.\nType here: "))
-            if minSize > maxSize or maxSize not in sizes:
+            max_size = int(
+                input(
+                    "Please enter maximum array size. Valid values are: 10, 20, 40, 60, 100, 120, 150, and 200. Max size must be equal of higher than min size.\nType here: "
+                )
+            )
+            if min_size > max_size or max_size not in sizes:
                 raise ValueError
-            base_url = base_url.replace("maxSize=''", "maxSize={}".format(str(maxSize)))
+            base_url = base_url.replace("max_size=''", "max_size={}".format(str(max_size)))
 
             return base_url
-        
+
         except ValueError:
-            return print("Invalid input. Please enter a valid integer, and ensure that maximum maze size is equal to or higher than minimum size.")
-    
+            return print(
+                "Invalid input. Please enter a valid integer, and ensure that maximum maze size is equal to or higher than minimum size."
+            )
+
     # Set URL with maze size constraints:
     base_url = set_url()
 
