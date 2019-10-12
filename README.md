@@ -5,11 +5,16 @@ A * pathfinder algorithm experiments on a maze
 - it started as a solver of a (at the time being) preset 
 - there was a random maze function added
 
-As part of Hacktoberfest 2019
+As part of Hacktoberfest 2019:
+   <img src="https://hacktoberfest.digitalocean.com/assets/logo-hf19-header-8245176fe235ab5d942c7580778a914110fa06a23c3d55bf40e2d061809d8785.svg"  title="Hacktoberfest">
+
 
 - @hangmansROP improved the style of the code by linting and code formatting
 - @Fayhen has added functionality to get a maze from Github Mazebot
-- @tusharck9 has added the functionality to returned a solved maze to Mazebot
+- @scavenger29 has added functionality to get the solved maze route from the algorithm transformed 
+to the format Mazebot understands
+- @tusharck9 has added the functionality to return a solved maze to Mazebot
+
 
 
 
@@ -72,11 +77,13 @@ We’re not only trying to find the shortest distance; we also want to take into
    * get a maze from the api  DONE :v:  
    * solve the maze DONE :v:  (this is what the algorithm does!)
    * function to return the solution through the API?  DONE :v:  
-   * function to transform the path the algorithm outputs to the EWSN (for east/west/south/north) the Mazebot expects so it can be sent:  ISSUE labeled [Hacktoberfest]
+   * function to transform the path the algorithm outputs to the EWSN (for east/west/south/north) the Mazebot expects so it can be sent DONE :v:  
    
-   <img src="https://hacktoberfest.digitalocean.com/assets/logo-hf19-header-8245176fe235ab5d942c7580778a914110fa06a23c3d55bf40e2d061809d8785.svg"  title="Hacktoberfest issue">
+   
+  
+   
 
-   * take part in the MAZEBOT500 race.
+  
 
 
 
