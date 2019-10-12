@@ -180,11 +180,11 @@ goal = (19, 19)
 
 # Uncomment line below if you wish to run the script with a random maze from MazebotAPI
 # In case of TypeError, rerun script and try again
-# grid, start, goal = mazebotapi.get_mazebot_random()
+# maze_path, grid, start, goal = mazebotapi.get_mazebot_random()
 
 # Uncomment line below if you wish to run the script with a random maze within defined size constraints
 # In case of TypeError, rerun script and try again
-# grid, start, goal = mazebotapi.get_mazebot_sized()
+# maze_path, grid, start, goal = mazebotapi.get_mazebot_sized()
 
 route = astar(grid, start, goal)
 route = route + [start]
