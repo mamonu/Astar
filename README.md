@@ -1,15 +1,24 @@
 # A *
 
+<br />
+ 
+
 A * pathfinder algorithm experiments on a maze
 
 - it started as a solver of a (at the time being) preset 
 - there was a random maze function added
 
-As part of Hacktoberfest 2019:
 
+<br />
+
+
+####  As part of Hacktoberfest 2019:
+
+<br />
 
    <img src="https://hacktoberfest.digitalocean.com/assets/logo-hf19-header-8245176fe235ab5d942c7580778a914110fa06a23c3d55bf40e2d061809d8785.svg"  title="Hacktoberfest">
 
+<br />
 
 - @hangmansROP improved the style of the code by linting and code formatting
 - @Fayhen has added functionality to get a maze from Github Mazebot
@@ -19,9 +28,11 @@ to the format Mazebot understands
 
 
 
-
+<br />
 
 ### TLDR 
+
+<br />
 
 maze & start & end points:
 
@@ -30,8 +41,11 @@ maze & start & end points:
 
 
 
+<br />
 
 ### A* algorithm
+
+<br />
 
 In games we often want to find paths from one location to another. 
 We’re not only trying to find the shortest distance; we also want to take into account travel time.
@@ -61,11 +75,13 @@ We’re not only trying to find the shortest distance; we also want to take into
 
 
 
-
+<br />
 
 ----
 
 #### TODO/DONE:
+
+<br />
 
  - create random maps with a function: DONE :v:   :game_die::game_die::game_die:
 
