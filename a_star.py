@@ -1,10 +1,10 @@
 import heapq
-import numpy
+import numpy as np
 import matplotlib.pyplot as plt
-import mazebotapi  # To import MazebotAPI request functions from mazebotapi.py
+import mazebotapi
 
 
-grid = numpy.array(
+grid = np.array(
     [
         [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -31,12 +31,14 @@ grid = numpy.array(
 
 
 def random_grid(maze_size):
-    """Generate a random maze grid.
-        random_grid = numpy.random.randint(2, size=(SIZE,SIZE))
-        Note: Not all mazes are currently solvable.
-        TODO: Look into procedural generation over random"""
-    grid = numpy.random.randint(0, 2, size=(maze_size, maze_size))
-    solution = numpy.random.randint(1, 2, size=(maze_size, maze_size))
+
+    # Generate a random maze grid.
+    # random_grid = np.random.randint(2, size=(SIZE,SIZE))
+    # Note: Not all mazes are currently solvable.
+    # TODO: Look into procedural generation over random
+
+    grid = np.random.randint(0, 2, size=(maze_size, maze_size))
+    solution = np.random.randint(1, 2, size=(maze_size, maze_size))
     x_plane = 0  # starting on left in x plane
     y_plane = 0  # starting on top  in y plane
     i = 1
@@ -50,27 +52,27 @@ def random_grid(maze_size):
         y_step = 0
         while x_step == 0 and y_step == 0:
             if x_plane == 0:
-                x_step += numpy.random.randint(0, 2)
+                x_step += np.random.randint(0, 2)
                 x_plane = x_plane + x_step
             elif x_plane == maze_size - 1:
-                x_step -= numpy.random.randint(0, 2)
+                x_step -= np.random.randint(0, 2)
                 x_plane = x_plane + x_step
             elif x_plane > 0 < (maze_size - 1):
-                x_step = numpy.random.randint(0, 2)
-                addminuscase = numpy.random.randint(0, 2)
+                x_step = np.random.randint(0, 2)
+                addminuscase = np.random.randint(0, 2)
                 if addminuscase == 0:
                     x_plane = x_plane + x_step
                 else:
                     x_plane = x_plane - x_step
             if y_plane == 0:
-                y_step += numpy.random.randint(0, 2)
+                y_step += np.random.randint(0, 2)
                 y_plane = y_plane + y_step
             elif y_plane == maze_size - 1:
-                y_step -= numpy.random.randint(0, 2)
+                y_step -= np.random.randint(0, 2)
                 y_plane = y_plane + y_step
             elif y_plane > 0 < (maze_size - 1):
-                y_step = numpy.random.randint(0, 2)
-                addminuscase = numpy.random.randint(0, 2)
+                y_step = np.random.randint(0, 2)
+                addminuscase = np.random.randint(0, 2)
                 if addminuscase == 0:
                     y_plane = y_plane + y_step
                 else:
@@ -85,20 +87,19 @@ def random_grid(maze_size):
 def heuristic(vector_a, vector_b):
     """ Taking manhattan distance as the A* heuristic.
         TODO : try more distances as A* heuristics."""
-    return numpy.sqrt(
-        (vector_b[0] - vector_a[0]) ** 2 + (vector_b[1] - vector_a[1]) ** 2
-    )
+    return np.sqrt((vector_b[0] - vector_a[0]) ** 2 + (vector_b[1] - vector_a[1]) ** 2)
 
 
-def eukleidian(vector_a, vector_b):
+def euclidian(vector_a, vector_b):
     dimension = len(vector_a)  # dimension of vector a
     result = 0  # declaring variable for storing a^2 + b^2
-    while dimension > 0:  # loop with iterations=dimension for S(a^2+b^2)
+    while dimension > 0:  # loop with iterations=dimension for Sum(a^2+b^2)
         result += (
-            vector_b[dimension - 1] - vector_a[dimension - 1]
-        ) ** 2  # dimension-1 because of the a[0],b[0]
+            vector_b[dimension - 1]
+            - vector_a[dimension - 1]  # dimension-1 because of a[0],b[0]
+        ) ** 2
         dimension -= 1
-    return numpy.sqrt(result)
+    return np.sqrt(result)
 
 
 def britishrl(vector_a, vector_b):
@@ -106,8 +107,8 @@ def britishrl(vector_a, vector_b):
     i = 0
     y = 0
     while dimension > 0:
-        i += numpy.sqrt((vector_b[dimension - 1]) ** 2)  # the oldschool way of abs
-        y += numpy.sqrt((vector_a[dimension - 1]) ** 2)
+        i += np.sqrt((vector_b[dimension - 1]) ** 2)  # oldschool abs :)
+        y += np.sqrt((vector_a[dimension - 1]) ** 2)
         dimension -= 1
     return i + y
 
@@ -191,37 +192,40 @@ route = route + [start]
 route = route[::-1]
 
 
+print(route)
+
+
 # extract x and y coordinates from route list
-x_coords = []
-y_coords = []
+# x_coords = []
+# y_coords = []
 
 
-for i, item in enumerate(route):
-    with plt.xkcd():
-        x = route[i][0]
-        y = route[i][1]
-        x_coords.append(x)
-        y_coords.append(y)
-        fig, ax = plt.subplots(figsize=(8, 8))
-        ax.imshow(grid, cmap=plt.cm.Dark2)
-        ax.scatter(start[1], start[0], marker="*", color="yellow", s=200)
-        ax.scatter(goal[1], goal[0], marker="+", color="red", s=200)
-        ax.plot(y_coords, x_coords, color="black")
-        plt.xticks([])
-        plt.yticks([])
-        plt.title("A* algorithm step " + str(i))
+# for i, item in enumerate(route):
+#     with plt.xkcd():
+#         x = route[i][0]
+#         y = route[i][1]
+#         x_coords.append(x)
+#         y_coords.append(y)
+#         fig, ax = plt.subplots(figsize=(8, 8))
+#         ax.imshow(grid, cmap=plt.cm.Dark2)
+#         ax.scatter(start[1], start[0], marker="*", color="yellow", s=200)
+#         ax.scatter(goal[1], goal[0], marker="+", color="red", s=200)
+#         ax.plot(y_coords, x_coords, color="black")
+#         plt.xticks([])
+#         plt.yticks([])
+#         plt.title("A* algorithm step " + str(i))
 
-        # Output numbering in a ffmpeg compatible way!
-        if i < 10:
-            filename = "mazestep_00%d.png" % i
-        elif (i > 9) & (i < 100):
-            filename = "mazestep_0%d.png" % i
-        else:
-            filename = "mazestep_%d.png" % i
+#         # Output numbering in a ffmpeg compatible way!
+#         if i < 10:
+#             filename = "mazestep_00%d.png" % i
+#         elif (i > 9) & (i < 100):
+#             filename = "mazestep_0%d.png" % i
+#         else:
+#             filename = "mazestep_%d.png" % i
 
-        plt.savefig(filename)
-        plt.close()
-    # plt.show()
+#         plt.savefig(filename)
+#         plt.close()
+# plt.show()
 
 
 # need to then run from the shell:
