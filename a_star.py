@@ -124,8 +124,39 @@ def radar_screen_metric(vector_a, vector_b):
     return min(aminb)
 
 
-def astar(array, start, goal):
+def set_x(x_diff):
+    if x_diff == 1:
+        return "S"
+    elif x_diff == -1:
+        return "N"
 
+
+def set_y(y_diff):
+    if y_diff == 1:
+        return "E"
+    elif y_diff == -1:
+        return "W"
+
+
+def transform_route(route):
+    direction = ""
+    for i in range(1, len(route)):
+        x_diff, y_diff = np.subtract(route[i], route[i-1])
+        if x_diff == 0:
+            direction += set_y(y_diff)
+        elif y_diff == 0:
+            direction += set_x(x_diff)
+        else:
+            if grid[route[i-1][0]+x_diff][route[i-1][1]] == 1:
+                direction += set_y(y_diff)
+                direction += set_x(x_diff)
+            else:
+                direction += set_x(x_diff)
+                direction += set_y(y_diff)
+    return direction
+
+
+def astar(array, start, goal):
     neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)]
 
     close_set = set()
@@ -190,9 +221,9 @@ goal = (19, 19)
 route = astar(grid, start, goal)
 route = route + [start]
 route = route[::-1]
+direction = transform_route(route)
 
-
-print(route)
+print(direction)
 
 
 # extract x and y coordinates from route list
