@@ -5,7 +5,7 @@
 
 A * pathfinder algorithm experiments on a maze
 
-- it started as a solver of a (at the time being) preset 
+- it started as a solver of a (at the time being) preset maze
 - there was a random maze function added
 
 
