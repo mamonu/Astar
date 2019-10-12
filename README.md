@@ -6,6 +6,8 @@ A * pathfinder algorithm experiments on a maze
 - there was a random maze function added
 
 As part of Hacktoberfest 2019:
+
+
    <img src="https://hacktoberfest.digitalocean.com/assets/logo-hf19-header-8245176fe235ab5d942c7580778a914110fa06a23c3d55bf40e2d061809d8785.svg"  title="Hacktoberfest">
 
 
