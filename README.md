@@ -83,6 +83,14 @@ We’re not only trying to find the shortest distance; we also want to take into
 
 <br />
 
+- improve quality of code
+    
+    * lint / format code: DONE :v: 
+    * modularise code a bit more (get solver on its own folder so as to import it etc)
+    * modularise the visualization / animation part
+
+
+
  - create random maps with a function: DONE :v:   :game_die::game_die::game_die:
 
 <img src="https://github.com/mamonu/Astar/blob/master/outrand.gif"  title="A*">
@@ -97,13 +105,6 @@ We’re not only trying to find the shortest distance; we also want to take into
    * function to return the solution through the API?  DONE :v:  
    * function to transform the path the algorithm outputs to the EWSN (for east/west/south/north) the Mazebot expects so it can be sent DONE :v:  
    
-   
-  
-   
-
-  
-
-
 
 
 - use a graphics library to visualise everything in 3d: TODO :scream:
